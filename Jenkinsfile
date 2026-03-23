@@ -1,40 +1,31 @@
 pipeline {
     agent any
-
-    tools {
-        maven 'Maven'
-    }
-
     stages {
-        stage('Clone') {
+        stage('Clean Workspace') {
             steps {
-                checkout scm
+                sh 'rm -rf *'
             }
         }
-
+        stage('Clone the repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/CristiSlv1/ssvv.git'
+                sh 'tree'
+            }
+        }
         stage('Build') {
             steps {
-                sh 'mvn clean compile'
+                sh 'mvn clean install -DskipTests'
             }
         }
-
-        stage('Test') {
+        stage('Run Tests') {
             steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
+                sh 'mvn -Dtest=EvenNumbersTest verify'
             }
         }
-    }
-
-    post {
-        always {
-            allure includeProperties: false,
-                   jdk: '',
-                   results: [[path: 'target/allure-results']]
+        stage('Publish Allure Report') {
+            steps {
+                allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+            }
         }
     }
 }

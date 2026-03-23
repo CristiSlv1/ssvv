@@ -5,10 +5,12 @@ services:
       dockerfile_inline: |
         FROM jenkins/jenkins:lts
         USER root
-        RUN apt-get update && apt-get install -y maven
-        RUN jenkins-plugin-cli --plugins allure-jenkins-plugin:2.32.0 workflow-aggregator git
+        RUN apt-get update && apt-get install -y maven tree
+        RUN jenkins-plugin-cli --plugins allure-jenkins-plugin:2.32.0 workflow-aggregator:600.vb_57cdd26fdd7 matrix-project:845.vffd7fa_f27555 git:5.7.0
+        RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d && echo 'import jenkins.model.*' > /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'import hudson.tools.*' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'import ru.yandex.qatools.allure.jenkins.tools.*' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'def desc = Jenkins.instance.getDescriptor(AllureCommandlineInstallation.class)' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'def installer = new AllureCommandlineInstaller("2.32.2")' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'def installSourceProperty = new InstallSourceProperty([installer])' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'def installation = new AllureCommandlineInstallation("allure", "", [installSourceProperty])' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'desc.setInstallations(installation)' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy && echo 'desc.save()' >> /usr/share/jenkins/ref/init.groovy.d/allure_init.groovy
         USER jenkins
     container_name: jenkins_github
+    restart: always
     ports:
       - "8080:8080"
       - "50000:50000"
