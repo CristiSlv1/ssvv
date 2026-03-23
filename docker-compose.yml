@@ -1,0 +1,16 @@
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM jenkins/jenkins:lts
+        USER root
+        RUN apt-get update && apt-get install -y maven
+        RUN jenkins-plugin-cli --plugins allure-jenkins-plugin:2.32.0 workflow-aggregator git
+        USER jenkins
+    container_name: jenkins_github
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_data:/var/jenkins_home
