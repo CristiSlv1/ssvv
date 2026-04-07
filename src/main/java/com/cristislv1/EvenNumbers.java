@@ -41,12 +41,10 @@ public class EvenNumbers {
 
    static int determinaNrPare(int var0, int[] var1) {
       int var2 = 0;
-      int var3 = 1;
 
-      while(var3 < var0 - 1) {
+      for(int var3 = 0; var3 < var0; ++var3) {
          if (var1[var3] % 2 == 0) {
             ++var2;
-            ++var3;
          }
       }
 
