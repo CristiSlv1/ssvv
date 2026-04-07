@@ -32,6 +32,21 @@ pipeline {
                 [path: 'Lab03Solutions/inclass-set/target/allure-results'],
                 [path: 'Lab03Solutions/takehome-nextdate/target/allure-results']
             ]
+            script {
+                try {
+                    recordCoverage(
+                        id: 'jacoco',
+                        name: 'JaCoCo Coverage',
+                        sourceCodeRetention: 'EVERY_BUILD',
+                        tools: [
+                            [parser: 'JACOCO', pattern: 'Lab03Solutions/inclass-set/target/site/jacoco/jacoco.xml'],
+                            [parser: 'JACOCO', pattern: 'Lab03Solutions/takehome-nextdate/target/site/jacoco/jacoco.xml']
+                        ]
+                    )
+                } catch (Exception err) {
+                    echo "Coverage plugin step unavailable: ${err.getClass().getSimpleName()} - ${err.getMessage()}"
+                }
+            }
             archiveArtifacts artifacts: 'Lab03Solutions/**/target/surefire-reports/*.xml,Lab03Solutions/**/target/site/jacoco/**', allowEmptyArchive: true
         }
     }
