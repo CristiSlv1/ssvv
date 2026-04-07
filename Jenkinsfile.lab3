@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh 'tree -L 3 Lab03Solutions || true'
+            }
+        }
+
+        stage('In-Class WBT Tests') {
+            steps {
+                dir('Lab03Solutions/inclass-set') {
+                    sh 'mvn -B clean test'
+                }
+            }
+        }
+
+        stage('Take-Home WBT Tests') {
+            steps {
+                dir('Lab03Solutions/takehome-nextdate') {
+                    sh 'mvn -B clean test'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            allure includeProperties: false, jdk: '', results: [
+                [path: 'Lab03Solutions/inclass-set/target/allure-results'],
+                [path: 'Lab03Solutions/takehome-nextdate/target/allure-results']
+            ]
+            archiveArtifacts artifacts: 'Lab03Solutions/**/target/surefire-reports/*.xml', allowEmptyArchive: true
+        }
+    }
+}
+
