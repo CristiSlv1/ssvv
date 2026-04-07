@@ -12,7 +12,7 @@ pipeline {
         stage('In-Class WBT Tests') {
             steps {
                 dir('Lab03Solutions/inclass-set') {
-                    sh 'mvn -B clean test'
+                    sh 'mvn -B clean verify'
                 }
             }
         }
@@ -20,7 +20,7 @@ pipeline {
         stage('Take-Home WBT Tests') {
             steps {
                 dir('Lab03Solutions/takehome-nextdate') {
-                    sh 'mvn -B clean test'
+                    sh 'mvn -B clean verify'
                 }
             }
         }
@@ -32,8 +32,7 @@ pipeline {
                 [path: 'Lab03Solutions/inclass-set/target/allure-results'],
                 [path: 'Lab03Solutions/takehome-nextdate/target/allure-results']
             ]
-            archiveArtifacts artifacts: 'Lab03Solutions/**/target/surefire-reports/*.xml', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'Lab03Solutions/**/target/surefire-reports/*.xml,Lab03Solutions/**/target/site/jacoco/**', allowEmptyArchive: true
         }
     }
 }
-

@@ -38,7 +38,6 @@ class GiveNextDateWhiteBoxTest {
     void invalidYearLow() {
         assertEquals("Invalid Input Date", run(1, 1, 1800));
     }
-
     @Test
     @DisplayName("TC4: Invalid year upper bound")
     @Description("year > 2021 should be rejected.")
@@ -191,4 +190,3 @@ class GiveNextDateWhiteBoxTest {
         assertEquals("2/29/2000", run(2, 28, 2000));
     }
 }
-
