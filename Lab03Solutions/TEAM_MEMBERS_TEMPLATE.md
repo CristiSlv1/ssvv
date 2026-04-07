@@ -1,11 +1,7 @@
 # Team Members
 
-Replace with your real team list (no guest names):
-
-1. Name Surname - contribution
-2. Name Surname - contribution
-3. Name Surname - contribution
-4. Name Surname - contribution
-5. Name Surname - contribution
-6. Name Surname - contribution
+1. Cristi Strugariu
+2. Artur Zsigmond
+3. Ioan Voda
+4. Andrei Vascul
 
